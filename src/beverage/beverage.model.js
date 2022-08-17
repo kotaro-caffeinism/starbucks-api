@@ -5,15 +5,17 @@ module.exports = {
   BEVERAGE_TABLE,
 
   getAll(limit = 20) {
-    return knex
+    return knex("beverage")
+      .leftJoin("category", "beverage.category", "=", "category.id")
+      .leftJoin("shop", "beverage.shop", "=", "shop.id")
       .select({
-        id: "id",
-        name: "name",
-        category: "category",
-        shop: "shop",
-        isSeasonal: "isSeasonal",
+        name: "beverage.name",
+        category: "category.name",
+        shop: "shop.shop",
+        isSeasonal: "beverage.isSeasonal",
       })
       .from(BEVERAGE_TABLE)
-      .limit(limit);
+      .limit(limit)
+      .orderBy("beverage.id");
   },
 };

@@ -27,6 +27,11 @@ describe("db beverage", () => {
         const customers = await beverageModel.getAll(3);
         expect(customers.length).to.be.at.most(3);
       });
+      it("should join three table", async () => {
+        const customers = await beverageModel.getAll(1);
+        expect(customers[0].category).to.be.a("string");
+        expect(customers[0].shop).to.be.a("string");
+      });
     });
   });
 });
