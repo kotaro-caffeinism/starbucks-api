@@ -5,6 +5,15 @@
 exports.seed = async function (knex) {
   await knex.schema.raw("SELECT SETVAL ('beverage_id_seq', 1, false)");
   await knex("beverage").del();
+  await knex("shop").del();
+  await knex("shop").insert([
+    {
+      shop: "STARBUCKS RESERVE® ROASTERY TOKYO",
+    },
+    {
+      shop: "STARBUCKS Tea & Café",
+    },
+  ]);
   await knex("beverage").insert([
     {
       name: "石川 いいじ 棒ほうじ茶 フラペチーノ",
@@ -24,7 +33,7 @@ exports.seed = async function (knex) {
     {
       name: "バレルエイジド コールド ブリュー",
       category: "コーヒー",
-      shop: "STARBUCKS RESERVE® ROASTERY TOKYO",
+      shop: 1,
     },
     {
       name: "スターバックス ラテ",
@@ -57,7 +66,7 @@ exports.seed = async function (knex) {
     {
       name: "ストロベリー & パッション ティー フラペチーノ®",
       category: "フラペチーノ®",
-      shop: "STARBUCKS Tea & Café",
+      shop: 2,
     },
   ]);
 };
