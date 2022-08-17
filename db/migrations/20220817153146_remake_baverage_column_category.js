@@ -4,15 +4,15 @@
  */
 exports.up = function (knex) {
   return knex.schema
-    .alterTable("shop", (table) => {
-      table.foreign("id");
+    .alterTable("beverage", (table) => {
+      table.dropColumn("category");
     })
     .then(() => {
       return knex.schema.alterTable("beverage", (table) => {
         table
-          .integer("shop")
+          .integer("category")
           .references("id")
-          .inTable("shop")
+          .inTable("category")
           .onDelete("cascade")
           .onUpdate("cascade");
       });
@@ -25,12 +25,12 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
   return knex.schema
-    .alterTable("shop", (table) => {
-      table.dropForeign("id");
+    .alterTable("beverage", (table) => {
+      table.dropColumn("category");
     })
     .then(() => {
-      return knex.schema("beverage", (table) => {
-        table.dropColumn("shop");
+      return knex.schema.alterTable("beverage", (table) => {
+        table.varchar("category").notNullable().checkLength("<=", 30);
       });
     });
 };

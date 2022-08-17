@@ -3,8 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.alterTable("beverage", (table) => {
-    table.dropColumn("shop");
+  return knex.schema.createTable("category", (table) => {
+    table.increments("id").primary();
+    table.string("name").notNullable();
+    table.foreign("id");
   });
 };
 
@@ -13,7 +15,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema("beverage", (table) => {
-    table.dropColumn("shop");
-  });
+  return knex.schema.dropTable("category");
 };

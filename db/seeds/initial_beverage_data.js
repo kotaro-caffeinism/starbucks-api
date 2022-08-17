@@ -3,9 +3,26 @@
  * @returns { Promise<void> }
  */
 exports.seed = async function (knex) {
+  await knex.schema.raw("SELECT SETVAL ('shop_id_seq', 1, false)");
+  await knex.schema.raw("SELECT SETVAL ('category_id_seq', 1, false)");
   await knex.schema.raw("SELECT SETVAL ('beverage_id_seq', 1, false)");
-  await knex("beverage").del();
   await knex("shop").del();
+  await knex("category").del();
+  await knex("beverage").del();
+  await knex("category").insert([
+    {
+      name: "コーヒー",
+    },
+    {
+      name: "フラペチーノ®",
+    },
+    {
+      name: "エスプレッソ",
+    },
+    {
+      name: "ティー | TEAVANA™",
+    },
+  ]);
   await knex("shop").insert([
     {
       shop: "STARBUCKS RESERVE® ROASTERY TOKYO",
@@ -17,55 +34,55 @@ exports.seed = async function (knex) {
   await knex("beverage").insert([
     {
       name: "石川 いいじ 棒ほうじ茶 フラペチーノ",
-      category: "フラペチーノ®",
+      category: 2,
       isSeasonal: true,
     },
     {
       name: "山梨 ててっ!! ぶどう ホワイト チョコレート クリーム フラペチーノ",
-      category: "フラペチーノ®",
+      category: 2,
       isSeasonal: true,
     },
     {
       name: "沖縄 かりー ちんすこう バニラ キャラメル フラペチーノ",
-      category: "フラペチーノ®",
+      category: 2,
       isSeasonal: true,
     },
     {
       name: "バレルエイジド コールド ブリュー",
-      category: "コーヒー",
+      category: 1,
       shop: 1,
     },
     {
       name: "スターバックス ラテ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "ソイ ラテ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "アーモンドミルク ラテ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "ムースフォーム ラテ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "カフェ アメリカーノ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "エスプレッソ",
-      category: "エスプレッソ",
+      category: 3,
     },
     {
       name: "チャイティーラテ",
-      category: "ティー | TEAVANA™",
+      category: 4,
     },
     {
       name: "ストロベリー & パッション ティー フラペチーノ®",
-      category: "フラペチーノ®",
+      category: 2,
       shop: 2,
     },
   ]);
