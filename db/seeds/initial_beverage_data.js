@@ -4,8 +4,6 @@
  */
 exports.seed = async function (knex) {
   await knex.schema.raw("SELECT SETVAL ('beverage_id_seq', 1, false)");
-  // await knex.raw('ALTER TABLE customers AUTO_INCREMENT = 1');
-  // SELECT SETVAL ('samples_id_seq', 1, false);
   await knex("beverage").del();
   await knex("beverage").insert([
     {
@@ -14,7 +12,7 @@ exports.seed = async function (knex) {
       isSeasonal: true,
     },
     {
-      name: "山梨 ててっ!! ぶどう ホワイト チョコレート クリーム フラペチー",
+      name: "山梨 ててっ!! ぶどう ホワイト チョコレート クリーム フラペチーノ",
       category: "フラペチーノ®",
       isSeasonal: true,
     },
