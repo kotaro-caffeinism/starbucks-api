@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 
 const beverageController = require("./beverage/beverage.controller");
+const postController = require("./post/post.controller");
 
 const setupServer = () => {
   const app = express();
@@ -17,11 +18,15 @@ const setupServer = () => {
     res.render("pages/index");
   });
 
-  app.get("/api", (req, res) => {
-    res.send("Welcome to Starbucks API (not official)");
-  });
+  // app.get("/api", (req, res) => {
+  //   res.send("Welcome to Starbucks API (not official)");
+  // });
 
   app.get("/beverages", beverageController.index);
+  app.get("/post", postController.index);
+  app.post("/post", postController.post);
+  // app.patch()
+  // app.delete()
 
   return app;
 };

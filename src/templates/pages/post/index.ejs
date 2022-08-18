@@ -1,0 +1,15 @@
+<%- include('../../partials/header'); %>
+<h2>post</h2>
+<% post.forEach(function (post) { %>
+<article>
+  <p><b><%= post.username %></b></p>
+  <p><%= post.description %></p>
+</article>
+<% }); %>
+<form action="" method="POST">
+  <label for="username">ユーザー名</label>
+  <input type="text" name="username" />
+  <label for="description" required>投稿内容</label>
+  <input type="text" name="description" /><button type="submit">送信</button>
+</form>
+<%- include('../../partials/footer'); %>

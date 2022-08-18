@@ -2,6 +2,7 @@ const { expect, assert } = require("chai");
 const config = require("../knexfile");
 const knex = require("knex")(config);
 const beverageModel = require("../src/beverage/beverage.model.js");
+const postModel = require("../src/post/post.model.js");
 const BEVERAGE_TABLE = beverageModel.BEVERAGE_TABLE;
 
 describe("db beverage", () => {
@@ -28,9 +29,22 @@ describe("db beverage", () => {
         expect(customers.length).to.be.at.most(3);
       });
       it("should join three table", async () => {
-        const customers = await beverageModel.getAll(1);
+        const customers = await beverageModel.getAll(4);
         expect(customers[0].category).to.be.a("string");
-        expect(customers[0].shop).to.be.a("string");
+        expect(customers[3].shop).to.be.a("string");
+      });
+    });
+
+    describe.only("post", () => {
+      it("should show user's post", async () => {
+        const usersPost = await postModel.getAll();
+        expect(usersPost[0].username).to.a("string");
+        expect(usersPost[0].description).to.a("string");
+      });
+      it("should accept user's post", async () => {
+        const usersPost = await postModel.post();
+        expect(usersPost[0].username).to.a("string");
+        expect(usersPost[0].description).to.a("string");
       });
     });
   });
