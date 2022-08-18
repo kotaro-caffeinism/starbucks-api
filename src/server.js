@@ -19,20 +19,8 @@ const setupServer = () => {
 
   app.get("/admin", adminController.index);
 
-  // app.get("/admin/post", adminController.postIndex);
-  // app.post("/admin/post", adminController.post);
-
   app.get("/admin/put", adminController.putIndex);
   app.put("/admin/put", adminController.put);
-  // app.post("/admin/put", (req, res) => {
-  //   console.log(req.query);
-  //   res.render(req.query);
-  // });
-  // app.put("/admin/put", (req, res) => {
-  //   console.log("hoge");
-  //   console.log(req.query);
-  // });
-  // app.put("/admin/put", adminController.put);
 
   app.delete("/admin/delete/:id", adminController.delete);
 
