@@ -1,0 +1,18 @@
+<%- include('../../partials/header'); %>
+<h1>ドリンクの追加</h1>
+<form action="" method="POST">
+  <label for="name">ドリンク名</label>
+  <input type="text" name="name" required />
+
+  <label for="category">カテゴリーコードを入力してください</label>
+  <input type="text" name="category" />
+
+  <label for="shop">店舗限定の場合は店舗コードを入力してください</label>
+  <input type="text" name="shop" />
+
+  <label for="isSeasonal">季節の商品ですか？</label>
+  <input type="text" name="isSeasonal" />
+
+  <button type="submit">送信</button>
+</form>
+<%- include('../../partials/footer'); %>

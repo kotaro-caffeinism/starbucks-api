@@ -66,47 +66,75 @@ describe("admin", () => {
     });
   });
 
-  describe("patch", () => {
-    before(async () => {
-      await knex(BEVERAGE_TABLE)
-        .insert([
-          {
-            id: 9999,
-            isSeasonal: true,
-            name: "めんつゆ",
-            shop: "1",
-            category: "1",
-          },
-        ])
-        .returning("id")
-        .then((result) => {
-          console.log("inserted test mentsuyu");
-        })
-        .catch(console.error);
-    });
+  describe.only("put", () => {
+    // before(async () => {
+    //   await knex(BEVERAGE_TABLE)
+    //     .insert([
+    //       {
+    //         id: 9999,
+    //         isSeasonal: true,
+    //         name: "めんつゆ",
+    //         shop: "1",
+    //         category: "1",
+    //       },
+    //     ])
+    //     .returning("id")
+    //     .then((result) => {
+    //       console.log("inserted test mentsuyu");
+    //     })
+    //     .catch(console.error);
+    // });
 
-    after(async () => {
-      await knex(BEVERAGE_TABLE)
-        .where("id", 9999)
-        .returning("id")
-        .del()
-        .then((result) => {
-          console.log("removed test menntsuyu");
-        })
-        .catch(console.error);
-    });
+    // after(async () => {
+    //   await knex(BEVERAGE_TABLE)
+    //     .where("id", 9999)
+    //     .returning("id")
+    //     .del()
+    //     .then((result) => {
+    //       console.log("removed test menntsuyu");
+    //     })
+    //     .catch(console.error);
+    // });
+    // it("should patch data", async () => {
+    //   const res = await request.put("/admin/put").send({
+    //     id: 9999,
+    //     name: "出汁醤油",
+    //   });
+    //   expect(JSON.parse(res.text)[0]).to.deep.equal({
+    //     id: 9999,
+    //     isSeasonal: true,
+    //     name: "出汁醤油",
+    //     shop: 1,
+    //     category: 1,
+    //   });
+    // });
     it("should patch data", async () => {
-      const res = await request.put("/admin/put").send({
-        id: 9999,
-        name: "出汁醤油",
-      });
-      expect(JSON.parse(res.text)[0]).to.deep.equal({
-        id: 9999,
-        isSeasonal: true,
-        name: "出汁醤油",
-        shop: 1,
-        category: 1,
-      });
+      const res = await request.put(
+        // encodeURI("/admin/put?method=put&id=13&name=出汁醤油")
+        encodeURI(
+          "/admin/put?_method=put&id=13&name=ジュース&category=&shop&isSeasonal="
+        )
+      );
+      // http://localhost:3000/hello?name=Suzuki'
+      // console.log(res);
+      // expect(JSON.parse(res.text)[0]).to.deep.equal({
+      //   id: 9999,
+      //   isSeasonal: true,
+      //   name: "出汁醤油",
+      //   shop: 1,
+      //   category: 1,
+      // });
+      expect(
+        await knex.where("id", 13).select().from("beverage").returning("*")
+      ).to.deep.equal([
+        {
+          id: 13,
+          name: "出汁醤油",
+          isSeasonal: true,
+          shop: 1,
+          category: 1,
+        },
+      ]);
     });
   });
 

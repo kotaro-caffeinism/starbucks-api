@@ -1,0 +1,26 @@
+<%- include('../../partials/header'); %>
+
+<h1>ドリンクの編集</h1>
+<form action="" method="get">
+  <input type="hidden" name="_method" value="put" />
+
+  <label for="id">変更したいドリンクのid（必須）</label>
+  <input type="text" name="id" />
+
+  <p>以下は変更したい箇所のみを記入してください。</p>
+
+  <label for="name">ドリンク名</label>
+  <input type="text" name="name" />
+
+  <label for="category">カテゴリーコード</label>
+  <input type="text" name="category" />
+
+  <label for="shop">店舗コード</label>
+  <input type="text" name="shop" />
+
+  <label for="isSeasonal">季節の商品ですか？</label>
+  <input type="text" name="isSeasonal" />
+
+  <input type="submit"></input>
+</form>
+<%- include('../../partials/footer'); %>

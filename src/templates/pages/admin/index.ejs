@@ -1,24 +1,6 @@
 <%- include('../../partials/header'); %>
 <h2>admin</h2>
-<button>ドリンクを追加する</button>
-<button>ドリンクを編集する</button>
-<button>ドリンクを削除する</button>
-<table cellspacing="0">
-  <thead>
-    <th scope="col">Name</th>
-    <th scope="col">Category</th>
-    <th scope="col">Shop</th>
-    <th scope="col">isSeasonal</th>
-  </thead>
-  <tbody>
-    <% beverages.forEach(function (beverage) { %>
-    <tr>
-      <td><%= beverage.name %></td>
-      <td><%= beverage.category %></td>
-      <td><%= beverage.shop %></td>
-      <td><%= beverage.isSeasonal %></td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
+<a href="/admin/post">ドリンクを追加する</a>
+<a href="/admin/put">ドリンクを編集する</a>
+<a href="/admin/delete">ドリンクを削除する</a>
 <%- include('../../partials/footer'); %>

@@ -15,16 +15,25 @@ const setupServer = () => {
 
   app.use(express.static(path.join(__dirname, "public")));
 
-  app.get("/", (req, res) => {
-    res.render("pages/index");
-  });
+  app.get("/", beverageController.index);
 
-  app.get("/beverages", beverageController.index);
-  app.get("/post", postController.index);
-  app.post("/post", postController.post);
   app.get("/admin", adminController.index);
+
+  // app.get("/admin/post", adminController.postIndex);
+  // app.post("/admin/post", adminController.post);
+
+  app.get("/admin/put", adminController.putIndex);
   app.put("/admin/put", adminController.put);
-  app.post("/admin/post", adminController.post);
+  // app.post("/admin/put", (req, res) => {
+  //   console.log(req.query);
+  //   res.render(req.query);
+  // });
+  // app.put("/admin/put", (req, res) => {
+  //   console.log("hoge");
+  //   console.log(req.query);
+  // });
+  // app.put("/admin/put", adminController.put);
+
   app.delete("/admin/delete/:id", adminController.delete);
 
   return app;

@@ -18,14 +18,36 @@ module.exports = {
       .orderBy("beverage.id");
   },
 
-  async put(data) {
-    for (const key in data) {
-      if (key !== "id") {
-        await knex("beverage").where("id", data.id).update(key, data[key]);
+  async put(query) {
+    // for (const key in query) {
+    //   if (key !== "id") {
+    //     await knex("beverage").where("id", data.id).update(key, data[key]);
+    //   }
+    // }
+
+    console.log(query);
+    for (const key in query) {
+      if (key !== "id" && key !== "_method" && query[key]) {
+        console.log(query.id);
+        console.log(key);
+        console.log(decodeURIComponent(query[key]));
+        await knex("beverage")
+          .where("id", +query.id)
+          .update(key, decodeURIComponent(query[key]));
       }
     }
+    // await knex("beverage")
+    //   .where("id", query.id)
+    //   .update({
+    //     name: query.name ? query.name : beverage.name,
+    //     shop: query.shop ? query.shop : beverage.shop,
+    //     category: query.category ? query.category : beverage.category,
+    //     isSeasonal: query.isSeasonal ? query.isSeasonal : beverage.isSeasonal,
+    //   });
+
+    console.log("hoge");
     return knex("beverage")
-      .where("id", data.id)
+      .where("id", +query.id)
       .select()
       .from(BEVERAGE_TABLE)
       .returning("*");
