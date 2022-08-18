@@ -59,12 +59,14 @@ describe("admin", () => {
     request.close();
   });
 
-  it("should have 200 status code", async () => {
-    const res = await request.get("/admin");
-    expect(res.statusCode).to.equal(200);
+  describe("admin home", () => {
+    it("should have 200 status code", async () => {
+      const res = await request.get("/admin");
+      expect(res.statusCode).to.equal(200);
+    });
   });
 
-  it("should patch data", async () => {
+  describe("patch", () => {
     before(async () => {
       await knex(BEVERAGE_TABLE)
         .insert([
@@ -93,21 +95,22 @@ describe("admin", () => {
         })
         .catch(console.error);
     });
-
-    const res = await request.put("/admin/put").send({
-      id: 9999,
-      name: "出汁醤油",
-    });
-    expect(JSON.parse(res.text)[0]).to.deep.equal({
-      id: 9999,
-      isSeasonal: true,
-      name: "出汁醤油",
-      shop: 1,
-      category: 1,
+    it("should patch data", async () => {
+      const res = await request.put("/admin/put").send({
+        id: 9999,
+        name: "出汁醤油",
+      });
+      expect(JSON.parse(res.text)[0]).to.deep.equal({
+        id: 9999,
+        isSeasonal: true,
+        name: "出汁醤油",
+        shop: 1,
+        category: 1,
+      });
     });
   });
 
-  it("should post data", async () => {
+  describe("post", () => {
     after(async () => {
       await knex(BEVERAGE_TABLE)
         .where("id", 9999)
@@ -118,31 +121,79 @@ describe("admin", () => {
         })
         .catch(console.error);
     });
-
-    const res = await request.post("/admin/post").send({
-      id: 9999,
-      name: "めんつゆ",
-      isSeasonal: true,
-      shop: 1,
-      category: 1,
-    });
-    expect(JSON.parse(res.text)[0]).to.deep.equal({
-      id: 9999,
-      name: "めんつゆ",
-      isSeasonal: true,
-      shop: 1,
-      category: 1,
-    });
-    expect(
-      await knex.where("id", 9999).select().from("beverage").returning("*")
-    ).to.deep.equal([
-      {
+    it("should post data", async () => {
+      const res = await request.post("/admin/post").send({
         id: 9999,
         name: "めんつゆ",
         isSeasonal: true,
         shop: 1,
         category: 1,
-      },
-    ]);
+      });
+      // console.log(JSON.parse(res));
+      expect(JSON.parse(res.text)).to.deep.equal({
+        id: 9999,
+        name: "めんつゆ",
+        isSeasonal: true,
+        shop: 1,
+        category: 1,
+      });
+      expect(
+        await knex.where("id", 9999).select().from("beverage").returning("*")
+      ).to.deep.equal([
+        {
+          id: 9999,
+          name: "めんつゆ",
+          isSeasonal: true,
+          shop: 1,
+          category: 1,
+        },
+      ]);
+    });
+  });
+
+  describe("delete", () => {
+    before(async () => {
+      await knex(BEVERAGE_TABLE)
+        .insert([
+          {
+            id: 9999,
+            isSeasonal: true,
+            name: "めんつゆ",
+            shop: "1",
+            category: "1",
+          },
+        ])
+        .returning("id")
+        .then(async (result) => {
+          console.log("inserted test mentsuyu");
+          // console.log(await knex("beverage").where("id", 9999).select());
+        })
+        .catch(console.error);
+    });
+
+    after(async () => {
+      await knex(BEVERAGE_TABLE)
+        .where("id", 9999)
+        .returning("id")
+        .del()
+        .then((result) => {
+          console.log("removed test menntsuyu");
+        })
+        .catch(console.error);
+    });
+    it("should delete data", async () => {
+      const res = await request.delete("/admin/delete/9999");
+
+      expect(JSON.parse(res.text)[0]).to.deep.equal({
+        id: 9999,
+        name: "めんつゆ",
+        isSeasonal: true,
+        shop: 1,
+        category: 1,
+      });
+      expect(
+        await knex.where("id", 9999).select().from("beverage").returning("*")
+      ).to.deep.equal([]);
+    });
   });
 });

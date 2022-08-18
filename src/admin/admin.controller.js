@@ -19,4 +19,9 @@ module.exports = {
     const result = await adminModel.post(req.body);
     res.json(result);
   },
+
+  async delete(req, res) {
+    const result = await adminModel.delete(req.params);
+    res.json(result);
+  },
 };

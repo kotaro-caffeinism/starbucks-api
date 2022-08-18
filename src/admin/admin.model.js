@@ -32,6 +32,13 @@ module.exports = {
   },
 
   async post(data) {
-    return knex("beverage").insert(data).returning("*");
+    const result = await knex("beverage").insert(data, ["*"]);
+    return result[0];
+  },
+
+  async delete(data) {
+    return knex("beverage")
+      .where("id", +data.id)
+      .del(["*"]);
   },
 };

@@ -25,7 +25,7 @@ const setupServer = () => {
   app.get("/admin", adminController.index);
   app.put("/admin/put", adminController.put);
   app.post("/admin/post", adminController.post);
-  // app.delete("admin/delete", adminController.delete)
+  app.delete("/admin/delete/:id", adminController.delete);
 
   return app;
 };
