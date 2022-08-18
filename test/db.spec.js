@@ -3,6 +3,7 @@ const config = require("../knexfile");
 const knex = require("knex")(config);
 const beverageModel = require("../src/beverage/beverage.model.js");
 const postModel = require("../src/post/post.model.js");
+const adminModel = require("../src/admin/admin.model.js");
 const BEVERAGE_TABLE = beverageModel.BEVERAGE_TABLE;
 
 describe("db beverage", () => {
@@ -20,31 +21,34 @@ describe("db beverage", () => {
 
     describe("getAll", () => {
       it("should return an array of beverages", async () => {
-        const customers = await beverageModel.getAll();
-        expect(customers).to.be.an.instanceof(Array);
-        expect(customers.length).to.be.at.most(12);
+        const beverages = await beverageModel.getAll();
+        expect(beverages).to.be.an.instanceof(Array);
+        expect(beverages.length).to.be.at.most(12);
       });
       it("should accept a limit argument", async () => {
-        const customers = await beverageModel.getAll(3);
-        expect(customers.length).to.be.at.most(3);
+        const beverages = await beverageModel.getAll(3);
+        expect(beverages.length).to.be.at.most(3);
       });
       it("should join three table", async () => {
-        const customers = await beverageModel.getAll(4);
-        expect(customers[0].category).to.be.a("string");
-        expect(customers[3].shop).to.be.a("string");
+        const beverages = await beverageModel.getAll(4);
+        expect(beverages[0].category).to.be.a("string");
+        expect(beverages[3].shop).to.be.a("string");
       });
     });
 
-    describe.only("post", () => {
+    describe("post", () => {
       it("should show user's post", async () => {
         const usersPost = await postModel.getAll();
         expect(usersPost[0].username).to.a("string");
         expect(usersPost[0].description).to.a("string");
       });
-      it("should accept user's post", async () => {
-        const usersPost = await postModel.post();
-        expect(usersPost[0].username).to.a("string");
-        expect(usersPost[0].description).to.a("string");
+    });
+
+    describe("admin", () => {
+      it("should show beverage data", async () => {
+        const beverages = await adminModel.getAll();
+        expect(beverages).to.be.an.instanceof(Array);
+        expect(beverages.length).to.be.at.most(12);
       });
     });
   });

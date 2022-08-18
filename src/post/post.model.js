@@ -13,14 +13,4 @@ module.exports = {
       .from(USERS_POST_TABLE)
       .limit(limit);
   },
-
-  // post() {
-  //   return (username, description) =>
-  //     knex("users_post").insert([
-  //       {
-  //         username: username,
-  //         description: description,
-  //       },
-  //     ]);
-  // },
 };

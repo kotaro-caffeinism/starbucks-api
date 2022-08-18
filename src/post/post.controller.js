@@ -10,15 +10,6 @@ module.exports = {
     });
   },
   async post(req, res) {
-    // const post = await postModel.post(
-    //   req.params.username,
-    //   req.params.description
-    // );
-    // res.send(console.log(req.body));
-    // const insert = postModel.post();
-    // console.log(req.body);
-    // insert(req.body.username, req.body.description);
-
     await knex("users_post").insert([
       {
         username: req.body.username,
