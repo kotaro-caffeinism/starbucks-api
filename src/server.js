@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 
 const beverageController = require("./beverage/beverage.controller");
-const postController = require("./post/post.controller");
 const adminController = require("./admin/admin.controller");
 
 const setupServer = () => {
@@ -19,10 +18,14 @@ const setupServer = () => {
 
   app.get("/admin", adminController.index);
 
+  app.get("/admin/post", adminController.postIndex);
+  app.put("/admin/post", adminController.post);
+
   app.get("/admin/put", adminController.putIndex);
   app.put("/admin/put", adminController.put);
 
-  app.delete("/admin/delete/:id", adminController.delete);
+  app.get("/admin/delete", adminController.deleteIndex);
+  app.delete("/admin/delete", adminController.delete);
 
   return app;
 };

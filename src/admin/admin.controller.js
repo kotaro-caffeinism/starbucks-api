@@ -1,6 +1,4 @@
 const adminModel = require("./admin.model");
-// const knex = require("../knex");
-// const BEVERAGE_TABLE = "beverage";
 
 module.exports = {
   async index(req, res) {
@@ -29,7 +27,10 @@ module.exports = {
   },
 
   async delete(req, res) {
-    const result = await adminModel.delete(req.params);
+    const result = await adminModel.delete(req.query);
     res.json(result);
+  },
+  async deleteIndex(req, res) {
+    res.render("pages/admin/delete-index");
   },
 };

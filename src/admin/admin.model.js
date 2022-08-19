@@ -19,12 +19,8 @@ module.exports = {
   },
 
   async put(query) {
-    console.log(query);
     for (const key in query) {
       if (key !== "id" && key !== "_method" && query[key]) {
-        console.log(query.id);
-        console.log(key);
-        console.log(decodeURIComponent(query[key]));
         await knex("beverage")
           .where("id", +query.id)
           .update(key, decodeURIComponent(query[key]));
@@ -43,9 +39,9 @@ module.exports = {
     return result[0];
   },
 
-  async delete(data) {
+  async delete(query) {
     return knex("beverage")
-      .where("id", +data.id)
+      .where("id", +query.id)
       .del(["*"]);
   },
 };

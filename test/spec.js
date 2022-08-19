@@ -5,6 +5,8 @@ chai.use(chaiHttp);
 const { setupServer } = require("../src/server");
 const config = require("../knexfile");
 const knex = require("knex")(config);
+const beverageModel = require("../src/beverage/beverage.model.js");
+const adminModel = require("../src/admin/admin.model.js");
 const { BEVERAGE_TABLE } = require("../src/beverage/beverage.model");
 
 const server = setupServer();
@@ -67,53 +69,63 @@ describe("admin", () => {
   });
 
   describe.only("put", () => {
-    before(async () => {
-      await knex(BEVERAGE_TABLE)
-        .insert([
-          {
-            id: 9999,
-            isSeasonal: true,
-            name: "めんつゆ",
-            shop: "1",
-            category: "1",
-          },
-        ])
-        .returning("id")
-        .then((result) => {
-          console.log("inserted test mentsuyu");
-        })
-        .catch(console.error);
-    });
+    // before(async () => {
+    //   await knex(BEVERAGE_TABLE)
+    //     .insert([
+    //       {
+    //         id: 9999,
+    //         isSeasonal: true,
+    //         name: "めんつゆ",
+    //         shop: "1",
+    //         category: "1",
+    //       },
+    //     ])
+    //     .returning("id")
+    //     .then((result) => {
+    //       console.log("inserted test mentsuyu");
+    //     })
+    //     .catch(console.error);
+    // });
 
-    after(async () => {
-      await knex(BEVERAGE_TABLE)
-        .where("id", 9999)
-        .returning("id")
-        .del()
-        .then((result) => {
-          console.log("removed test menntsuyu");
-        })
-        .catch(console.error);
-    });
-    it("should patch data", async () => {
-      const res = await request.put("/admin/put").send({
-        id: 9999,
-        name: "出汁醤油",
-      });
-      expect(JSON.parse(res.text)[0]).to.deep.equal({
-        id: 9999,
-        isSeasonal: true,
-        name: "出汁醤油",
-        shop: 1,
-        category: 1,
-      });
-    });
+    // after(async () => {
+    //   await knex(BEVERAGE_TABLE)
+    //     .where("id", 9999)
+    //     .returning("id")
+    //     .del()
+    //     .then((result) => {
+    //       console.log("removed test menntsuyu");
+    //     })
+    //     .catch(console.error);
+    // });
+    // it("should patch data", async () => {
+    //   const res = await request.put("/admin/put").send({
+    //     id: 9999,
+    //     name: "出汁醤油",
+    //   });
+    //   expect(JSON.parse(res.text)[0]).to.deep.equal({
+    //     id: 9999,
+    //     isSeasonal: true,
+    //     name: "出汁醤油",
+    //     shop: 1,
+    //     category: 1,
+    //   });
+    // });
     it("should patch data", async () => {
       const res = await request.put(
+        // encodeURI("/admin/put?method=put&id=13&name=出汁醤油")
         encodeURI(
           "/admin/put?_method=put&id=13&name=ジュース&category=&shop&isSeasonal="
         )
       );
+      // http://localhost:3000/hello?name=Suzuki'
+      // console.log(res);
+      // expect(JSON.parse(res.text)[0]).to.deep.equal({
+      //   id: 9999,
+      //   isSeasonal: true,
+      //   name: "出汁醤油",
+      //   shop: 1,
+      //   category: 1,
+      // });
       expect(
         await knex.where("id", 13).select().from("beverage").returning("*")
       ).to.deep.equal([
@@ -147,7 +159,6 @@ describe("admin", () => {
         shop: 1,
         category: 1,
       });
-      // console.log(JSON.parse(res));
       expect(JSON.parse(res.text)).to.deep.equal({
         id: 9999,
         name: "めんつゆ",
@@ -184,6 +195,7 @@ describe("admin", () => {
         .returning("id")
         .then(async (result) => {
           console.log("inserted test mentsuyu");
+          // console.log(await knex("beverage").where("id", 9999).select());
         })
         .catch(console.error);
     });
@@ -211,6 +223,54 @@ describe("admin", () => {
       expect(
         await knex.where("id", 9999).select().from("beverage").returning("*")
       ).to.deep.equal([]);
+    });
+  });
+});
+
+describe("db beverage", () => {
+  describe("setup", () => {
+    it("should connect to database", () => {
+      knex.raw("select 1 as result").catch(() => {
+        assert.fail("unable to connect to database");
+      });
+    });
+    it("has run the initial migration", () => {
+      knex(BEVERAGE_TABLE)
+        .select()
+        .catch(() => assert.fail("beverage table is not found."));
+    });
+
+    describe("getAll", () => {
+      it("should return an array of beverages", async () => {
+        const beverages = await beverageModel.getAll();
+        expect(beverages).to.be.an.instanceof(Array);
+        expect(beverages.length).to.be.at.most(12);
+      });
+      it("should accept a limit argument", async () => {
+        const beverages = await beverageModel.getAll(3);
+        expect(beverages.length).to.be.at.most(3);
+      });
+      it("should join three table", async () => {
+        const beverages = await beverageModel.getAll(4);
+        expect(beverages[0].category).to.be.a("string");
+        expect(beverages[3].shop).to.be.a("string");
+      });
+    });
+
+    describe("post", () => {
+      it("should show user's post", async () => {
+        const usersPost = await postModel.getAll();
+        expect(usersPost[0].username).to.a("string");
+        expect(usersPost[0].description).to.a("string");
+      });
+    });
+
+    describe("admin", () => {
+      it("should show beverage data", async () => {
+        const beverages = await adminModel.getAll();
+        expect(beverages).to.be.an.instanceof(Array);
+        expect(beverages.length).to.be.at.most(12);
+      });
     });
   });
 });

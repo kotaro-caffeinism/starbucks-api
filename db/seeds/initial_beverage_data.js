@@ -85,11 +85,5 @@ exports.seed = async function (knex) {
       category: 2,
       shop: 2,
     },
-    {
-      name: "めんつゆ",
-      category: 1,
-      shop: 1,
-      isSeasonal: true,
-    },
   ]);
 };
