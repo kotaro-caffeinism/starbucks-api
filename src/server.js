@@ -18,6 +18,9 @@ const setupServer = () => {
 
   app.get("/admin", adminController.index);
 
+  app.get("/admin/post", adminController.postIndex);
+  app.put("/admin/post", adminController.post);
+
   app.get("/admin/put", adminController.putIndex);
   app.put("/admin/put", adminController.put);
 
