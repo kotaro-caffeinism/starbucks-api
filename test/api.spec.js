@@ -67,63 +67,12 @@ describe("admin", () => {
   });
 
   describe.only("put", () => {
-    // before(async () => {
-    //   await knex(BEVERAGE_TABLE)
-    //     .insert([
-    //       {
-    //         id: 9999,
-    //         isSeasonal: true,
-    //         name: "めんつゆ",
-    //         shop: "1",
-    //         category: "1",
-    //       },
-    //     ])
-    //     .returning("id")
-    //     .then((result) => {
-    //       console.log("inserted test mentsuyu");
-    //     })
-    //     .catch(console.error);
-    // });
-
-    // after(async () => {
-    //   await knex(BEVERAGE_TABLE)
-    //     .where("id", 9999)
-    //     .returning("id")
-    //     .del()
-    //     .then((result) => {
-    //       console.log("removed test menntsuyu");
-    //     })
-    //     .catch(console.error);
-    // });
-    // it("should patch data", async () => {
-    //   const res = await request.put("/admin/put").send({
-    //     id: 9999,
-    //     name: "出汁醤油",
-    //   });
-    //   expect(JSON.parse(res.text)[0]).to.deep.equal({
-    //     id: 9999,
-    //     isSeasonal: true,
-    //     name: "出汁醤油",
-    //     shop: 1,
-    //     category: 1,
-    //   });
-    // });
     it("should patch data", async () => {
       const res = await request.put(
-        // encodeURI("/admin/put?method=put&id=13&name=出汁醤油")
         encodeURI(
           "/admin/put?_method=put&id=13&name=ジュース&category=&shop&isSeasonal="
         )
       );
-      // http://localhost:3000/hello?name=Suzuki'
-      // console.log(res);
-      // expect(JSON.parse(res.text)[0]).to.deep.equal({
-      //   id: 9999,
-      //   isSeasonal: true,
-      //   name: "出汁醤油",
-      //   shop: 1,
-      //   category: 1,
-      // });
       expect(
         await knex.where("id", 13).select().from("beverage").returning("*")
       ).to.deep.equal([
@@ -157,7 +106,6 @@ describe("admin", () => {
         shop: 1,
         category: 1,
       });
-      // console.log(JSON.parse(res));
       expect(JSON.parse(res.text)).to.deep.equal({
         id: 9999,
         name: "めんつゆ",
@@ -194,7 +142,6 @@ describe("admin", () => {
         .returning("id")
         .then(async (result) => {
           console.log("inserted test mentsuyu");
-          // console.log(await knex("beverage").where("id", 9999).select());
         })
         .catch(console.error);
     });
