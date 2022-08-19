@@ -9,7 +9,6 @@ module.exports = {
   },
 
   async postIndex(req, res) {
-    // console.log("index を開きました");
     res.render("pages/admin/post-index");
   },
 
@@ -28,7 +27,6 @@ module.exports = {
   },
 
   async delete(req, res) {
-    // const result = await adminModel.delete(req.params);
     const result = await adminModel.delete(req.query);
     res.json(result);
   },

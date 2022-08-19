@@ -19,19 +19,14 @@ module.exports = {
   },
 
   async put(query) {
-    console.log(query);
     for (const key in query) {
       if (key !== "id" && key !== "_method" && query[key]) {
-        console.log(query.id);
-        console.log(key);
-        console.log(decodeURIComponent(query[key]));
         await knex("beverage")
           .where("id", +query.id)
           .update(key, decodeURIComponent(query[key]));
       }
     }
 
-    console.log("hoge");
     return knex("beverage")
       .where("id", +query.id)
       .select()

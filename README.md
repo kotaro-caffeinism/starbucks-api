@@ -38,7 +38,19 @@ $ npm install
 $ npm run migrate
 ```
 
-5. アプリをスタートしてください
+5. `.env.local` ファイルを作成してください
+
+```
+
+SERVER_PORT=
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_NAME=starbucks
+DB_USER=
+
+```
+
+6. アプリをスタートしてください
 
 ```
 $ npm run start
